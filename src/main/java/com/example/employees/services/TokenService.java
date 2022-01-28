@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.example.employees.scurity.UserPrincipal;
 import com.example.employees.scurity.jwt.JwtLogin;
 import com.example.employees.scurity.jwt.JwtProperties;
+import com.example.employees.scurity.jwt.LoginResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,24 +35,17 @@ public class TokenService {
                 .sign(Algorithm.HMAC512(JwtProperties.Secret.getBytes()));
         return token;
     }
-    public String login(JwtLogin jwtLogin){
+    public LoginResponse login(JwtLogin jwtLogin){
 
-
-
-        try {
-          //  System.out.println(jwtLogin.getPassword()+ jwtLogin.getUsername());
-            Authentication authentication =authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(jwtLogin.getUsername(),jwtLogin.getPassword()));
+        System.out.println(jwtLogin.getPassword()+ jwtLogin.getUsername());
+        Authentication authentication =authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(jwtLogin.getUsername(),jwtLogin.getPassword()));
        /*     System.out.println(authentication);
             System.out.println(authentication.isAuthenticated());*/
-            //System.out.println("test");
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String token =generateToken(authentication);
-         //   System.out.println(token);
-            return token;
-        }catch (Exception e)
-        {e.printStackTrace();}
-
-return "";
+        //System.out.println("test");
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token =generateToken(authentication);
+        //   System.out.println(token);
+        return new LoginResponse(jwtLogin.getUsername(),token);
 
     }
 }

@@ -1,11 +1,13 @@
 package com.example.employees.controllers;
 
+import com.example.employees.scurity.jwt.LoginResponse;
 import com.example.employees.services.TokenService;
 import com.example.employees.scurity.jwt.JwtLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
     @Autowired
     private TokenService tokenService;
@@ -23,10 +25,9 @@ public class UserController {
 
     }
     @PostMapping("/signin")
-            public String login(@RequestBody JwtLogin jwtLogin)
+            public LoginResponse login(@RequestBody JwtLogin jwtLogin)
     {
-       String token= tokenService.login(jwtLogin);
-        System.out.println(token);
-        return token;
+      return  tokenService.login(jwtLogin);
+
     }
 }

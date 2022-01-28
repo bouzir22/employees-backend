@@ -42,7 +42,9 @@ private UserRepo userRepo;
                    .and()
                    .addFilter(new JwtAuthorizationFilter(authenticationManager(),userRepo))
                    .authorizeRequests()
-                   .antMatchers("/test").hasRole("superadmin")
+
+                   .antMatchers("/employee/delete/**").hasRole("superadmin")
+                   .antMatchers("/employee/edit/**").hasRole("superadmin")
                    .antMatchers("/signin").permitAll()
                    .anyRequest().authenticated();
 
